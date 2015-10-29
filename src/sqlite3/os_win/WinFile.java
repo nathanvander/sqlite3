@@ -12,6 +12,11 @@ import com.sun.jna.platform.win32.WinDef;
 ** portability layer.
 */
 public class WinFile extends sqlite3_file {
+	protected List getFieldOrder() {
+	     return Arrays.asList(new String[] {"pMethods","pVfs","h","locktype","sharedLockByte","ctrlFlags","lastErrno",
+	     	"pShm","zPath","szChunk","nFetchOut","hMap","pMapRegion","mmapSize","mmapSizeActual","mmapSizeMax"});
+	 }
+
 //typedef struct winFile winFile;
 //struct winFile {
   	//const sqlite3_io_methods *pMethod; /*** Must be first ***/
