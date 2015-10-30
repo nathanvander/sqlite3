@@ -15,9 +15,7 @@ import com.sun.jna.platform.win32.WinDef;
 public abstract class sqlite3_io_methods extends Structure {
 
 	protected List getFieldOrder() {
-	     return Arrays.asList(new String[] {"iVersion","xClose","xRead","xWrite","xTruncate","xSync","xFileSize","xLock","xUnLock",
-	     	"xCheckReservedLock","xFileControl","xSectorSize","xDeviceCharacteristics","xShmMap","xShmLock","xShmBarrier",
-	     	"xShmUnmap","xFetch","xUnfetch"});
+	     return Arrays.asList(new String[] {"iVersion"});
 	 }
 
 	public int iVersion;

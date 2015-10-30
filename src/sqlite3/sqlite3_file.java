@@ -22,9 +22,11 @@ import java.util.Arrays;
 
 public class sqlite3_file extends Structure {
 	//pointer to sqlite3_io_methods
-	public Pointer pMethods;
+	//public Pointer pMethods;
+	//this doesn't need to be a pointer
+	public sqlite3_io_methods pMethods;
 
 	protected List getFieldOrder() {
 	     return Arrays.asList(new String[] {"pMethods"});
-	 }
+	}
 }
