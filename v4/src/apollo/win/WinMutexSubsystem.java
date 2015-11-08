@@ -39,7 +39,7 @@ public class WinMutexSubsystem implements sqlite3_mutex_methods {
 
   	public sqlite3_mutex MutexAlloc(int type) {
 		WinMutex mu=null;
-		if (type==0 || type==2 || type>13) {
+		if (type==0 || type==1 || type>13) {
 			//create a new mutex
 			mu=new WinMutex();
 			mu.alloc(type);
