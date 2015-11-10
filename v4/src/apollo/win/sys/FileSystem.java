@@ -6,6 +6,7 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinBase;
+import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinError;
 import com.sun.jna.win32.W32APIOptions;
@@ -69,6 +70,7 @@ public class FileSystem {
 		int dwCreationDisposition = OPEN_ALWAYS;
 		int dwFlagsAndAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS;
 
+		System.out.println("desired access="+dwDesiredAccess);
 		WinNT.HANDLE h=kernel32.CreateFile(fileName, dwDesiredAccess, dwShareMode,null,
 			dwCreationDisposition, dwFlagsAndAttributes,null);
 		//check handle
@@ -110,7 +112,7 @@ public class FileSystem {
 	*/
 	public static WinNT.HANDLE openReadOnly(String fileName) {
 		if (fileName==null) {throw new IllegalArgumentException("fileName is null");}
-		int dwDesiredAccess = READ;
+		int dwDesiredAccess = GENERIC_READ;
 		int dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
 		int dwCreationDisposition = OPEN_EXISTING;
 		int dwFlagsAndAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS;
@@ -190,7 +192,7 @@ public class FileSystem {
 		}
 	}
 
-
+	//THIS COULD BE IN A SEPARATE FILE
 	//* osGetCurrentProcessId
 	//* use Kernel32.GetCurrentProcessId
 	public static int getCurrentProcessId() {
@@ -225,12 +227,24 @@ public class FileSystem {
 		}
 	}
 
+	public static WinBase.SYSTEM_INFO getSystemInfo() {
+		WinBase.SYSTEM_INFO info=new WinBase.SYSTEM_INFO();
+		kernel32.GetSystemInfo(info);
+		return info;
+	}
+
+	public static int getPageSize() {
+		WinBase.SYSTEM_INFO info=getSystemInfo();
+		WinDef.DWORD dw=info.dwPageSize;
+		return dw.intValue();
+	}
+
 	//-----------------------------------
 	//flags for CreateFile
 	//desired access for create file
-	public static final int READ=0x80000000;
-	public static final int WRITE=0x40000000;
-	public static final int READWRITE=(READ | WRITE);
+	public static final int GENERIC_READ=0x80000000;
+	public static final int GENERIC_WRITE=0x40000000;
+	public static final int READWRITE=(GENERIC_READ | GENERIC_WRITE);
 
 	//shared mode for create file
 	public static final int FILE_SHARE_NONE=0x00000000;
