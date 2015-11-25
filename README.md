@@ -15,3 +15,6 @@ Changelog:
 ==========
 11/8/2015   The current version is v4.  I changed the base package name to "apollo", because I am not following the
 sqlite code as closely, and I want to provide a little separation from it.
+
+11/25/2015. v9. I have decided just to do a wrapper around sqlite. Compare to sqlite4java available at:
+https://bitbucket.org/almworks/sqlite4java/
