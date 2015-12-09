@@ -58,11 +58,11 @@ public class Mutex {
   		this.name=name;
   		//create a new mutex without taking ownership of it
   		//you can create a mutex that already exists in another process.  This just means it is new to this process
-  		System.out.println("warning expensive system call kernel32.CreateMutex()");
+  		//System.out.println("warning expensive system call kernel32.CreateMutex()");
   		handle=kernel32.CreateMutex(null,false,name);
   		if (handle==null || handle.equals(WinBase.INVALID_HANDLE_VALUE)) {
    			//the create function failed
-   			System.out.println("warning expensive system call kernel32.GetLastError()");
+   			//System.out.println("warning: system call kernel32.GetLastError()");
    			int error=kernel32.GetLastError();
    			if (error==ERROR_INVALID_HANDLE) {
     			//there is already a different type of object with that name
@@ -133,7 +133,7 @@ public class Mutex {
 			System.out.println("thread "+Thread.currentThread().getId()+": waiting on ownership from kernel of mutex "+name+" at "+System.currentTimeMillis());
 			//we don't know who owns it. Maybe another process owns it or it is unowned
 			//this requires a kernel call
-			System.out.println("warning expensive system call kernel32.WaitForSingleObject()");
+			//System.out.println("warning: system call kernel32.WaitForSingleObject()");
 			int rc=kernel32.WaitForSingleObject(handle, millis);
 			if (rc==WAIT_OBJECT_0) {
 				//the object is acquired
@@ -189,6 +189,11 @@ public class Mutex {
 
 	//release the mutex
 	public void release() {
+		if (Thread.currentThread().getId()!=owner) {
+			System.out.println("warning: "+Thread.currentThread().getId()+" is not the owner but is trying to release the mutex");
+			//do nothing
+			return;
+		}
 		System.out.println("thread "+owner+" is releasing mutex "+name);
 		owner=FREED;
 		//first see if any local threads are waiting on it
@@ -202,7 +207,7 @@ public class Mutex {
 		if (owner==FREED) {
 			owner=UNOWNED;
 			System.out.println("no local threads want mutex "+name+" so releasing it to kernel at "+System.currentTimeMillis());
-			System.out.println("warning expensive system call kernel32.ReleaseMutex()");
+			//System.out.println("warning: system call kernel32.ReleaseMutex()");
 			boolean b=kernel32.ReleaseMutex(handle);
   			if (!b) {
    				int error=kernel32.GetLastError();
