@@ -1,0 +1,37 @@
+Release Notes
+2/21/2016
+
+Apollo is my working name for a wrapper around SQLite3.  I have tested it a little and it compiles and runs.
+
+Features:
+1. This is a replacement for sqlite4java, available at almworks.com.  This doesn't do everything that sqlite4java
+does, however.
+2. This has a very simple interface.  Look at DataStore.
+3. This requires transactions to be explicit.  
+4. This only works on Windows due to using mutexes and process ids.
+5. You don't have to use sql to create tables, or do inserts or selects.  However, you still have the option
+ of coding custom sql code.
+
+Sample code for an insert:
+	Person p=new Person();
+	p.first_name="Bob";
+	p.last_name="Jones";
+
+	//insert it in database
+	Transaction t=DataStore.createTransaction();
+	t.begin();
+	long key=t.insert(p);
+	t.commit();
+
+To retrieve the same object:
+	Person p2=(Person)DataStore.get("Person",key);
+	System.out.println(p2.first_name);
+
+Missing features and Wish List for later versions:
+1. Pickle (serializable) format for objects
+2. Automatic backup of updated and deleted object in a history table.
+3. Custom types, including date, time and enumerations.
+4. PreparedStatements
+5. Allow id fields with name other than "id".  Right now the primary key is hard-coded in several places
+to this value.
+6. Blobs and storage of byte arrays.
