@@ -18,3 +18,7 @@ sqlite code as closely, and I want to provide a little separation from it.
 
 11/25/2015. v9. I have decided just to do a wrapper around sqlite. Compare to sqlite4java available at:
 https://bitbucket.org/almworks/sqlite4java/
+
+Update 12/2/2016.  This project is obsolete and I am abandoning it.  Look at the "apollo" project at 
+https://github.com/nathanvander/apollo for current improvements.  This was a very interesting learning experience,
+however, rewriting SQLite in its entirety is a massive task.  I will delete this at some point.
